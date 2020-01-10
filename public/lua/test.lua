@@ -2,7 +2,16 @@ code = "eNrtPWtzm8iWn0e/gnLV7Jdc2/SDBrLJveW3NRM7juS85kuqoRuLGIECyI6ztf99TzcggQQS
 -- local xmlText = Inflate(common.base64.decode(buf:gsub("-","+"):gsub("_","/")))
 
 xmlText = base64.decode(code:gsub("-","+"):gsub("_","/"))
+print(xmlText)
+print("res", Inflate(xmlText))
+
+function loadBuildFromXML(xmlText)
+    mainObject.main:SetMode("BUILD", false, "", xmlText)
+    runCallback("OnFrame")
+end
 
 -- self.build:Init(self.build.dbFileName, self.build.buildName, xmlText)
 
-build = buildMode:Init(nil, nil, xmlText)
+build = buildMode:Init(nil, "My Build", xmlText)
+build.calcsTab:BuildOutput()
+print(build.calcsTab.calcs)

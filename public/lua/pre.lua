@@ -7,13 +7,9 @@ function require(name)
 end
 
 function dofile (fileName)
-  if fileName == "Launch.lua" then
-    print("dofile(Launch.lua) prevented")
-  else
-    print("doFile: " .. fileName)
-    local f = assert(loadfile("PathOfBuilding/" .. fileName))
-    return f()
-  end
+  print("doFile: " .. fileName)
+  local f = assert(loadfile("PathOfBuilding/" .. fileName))
+  return f()
 end
 
 function GetTime()

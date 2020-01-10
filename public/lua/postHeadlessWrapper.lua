@@ -4,20 +4,14 @@ local parser = XmlParser.parser()
 local parser = new XmlParser()
 ]]
 
-xml = {
-}
-
-function xml:ParseXML (xml)
-  local parser = xml2lua.parser(treeHandler)
-  return parser.parse(xml)
-end
-
 function require(name)
-  print("Trying to get an extension: "..name)
+  --print("Trying to get an extension: "..name)
   if name == "xml" then
     return xml
+  elseif name == "base64" then
+    return base64
   else
-    -- print("Trying to get an extension: "..name)
+    print("require a missing extension: "..name)
   end
 end
 
@@ -35,11 +29,53 @@ function LoadModule(fileName, ...)
 	end
 end
 
+function PLoadModule(fileName, ...)
+    if not fileName:match("%.lua") then
+        fileName = fileName .. ".lua"
+    end
+    fileName = "/PathOfBuilding/" .. fileName
+    local func, err = loadfile(fileName)
+    if func then
+        return PCall(func, ...)
+    else
+        error("PLoadModule() error loading '"..fileName.."': "..err)
+    end
+end
+
+unpack = table.unpack
+
+function PCall(func, ...)
+    local ret = { pcall(func, ...) }
+    if ret[1] then
+        table.remove(ret, 1)
+        return nil, unpack(ret)
+    else
+        return ret[2]
+    end
+end
+
 function ConPrintf(fmt, ...)
 	-- Optional
-	--print(string.format(fmt, ...))
+	print(string.format(fmt, ...))
 end
 
 function launch:ShowErrMsg (fmt, ...)
   print("/!\\", string.format(fmt, ...))
 end
+
+function SetMainObject(obj)
+	mainObject = obj
+end
+
+--[[function SetWindowTitle(title) end
+function ConExecute(cmd) end
+function RenderInit() end
+function ConClear() end
+function GetScriptPath() return "." end
+function GetRuntimePath() end]]
+
+--[[main.modes = {
+  LIST = {
+    subPath = ""
+  }
+}]]

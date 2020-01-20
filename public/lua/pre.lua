@@ -6,10 +6,14 @@ function require(name)
   print("HeadlessWrapper require: "..name)
 end
 
-function dofile (fileName)
+function dofile(fileName)
   print("doFile: " .. fileName)
   local f = assert(loadfile("PathOfBuilding/" .. fileName))
   return f()
+end
+
+function loadstring(str)
+  return str
 end
 
 function GetTime()
